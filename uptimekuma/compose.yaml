@@ -11,8 +11,8 @@ services:
         required: false
     environment:
       TZ: "${TZ:-UTC}"
-      PUID: "${PUID:-1000}"
-      PGID: "${PGID:-1000}"
+      PUID: "${UPTIME_KUMA_PUID:-${PUID:-1000}}"
+      PGID: "${UPTIME_KUMA_PGID:-${PGID:-1000}}"
     volumes:
       - "${BASE_DIR:-.}/data:/app/data"
     networks:
@@ -20,8 +20,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "${CPU_LIMIT:-0}"
-          memory: "${MEM_LIMIT:-0}"
+          cpus: "${UPTIME_KUMA_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${UPTIME_KUMA_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   uptime-kuma:
