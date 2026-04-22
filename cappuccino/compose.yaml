@@ -17,14 +17,13 @@ services:
         required: false
     environment:
       TZ: "${TZ:-UTC}"
-      CFG_BOT_NICK: "${CFG_BOT_NICK:?}"
-      CFG_BOT_REALNAME: "${CFG_BOT_REALNAME:-cappuccino}"
-      CFG_BOT_USERNAME: "${CFG_BOT_USERNAME:-cappuccino}"
-      CFG_IRC_HOST: "${CFG_IRC_HOST:?}"
-      CFG_IRC_PORT: "${CFG_IRC_PORT:-6697}"
-      CFG_IRC_SSL: "${CFG_IRC_SSL:-true}"
-      CFG_BOT_ADMIN: "${CFG_BOT_ADMIN:?}"
-      CFG_DB_URI: "${CFG_DB_URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}}"
+      CAPPUCCINO_NICK: "${CAPPUCCINO_NICK:?}"
+      CAPPUCCINO_REALNAME: "${CAPPUCCINO_REALNAME:-cappuccino}"
+      CAPPUCCINO_USERNAME: "${CAPPUCCINO_USERNAME:-cappuccino}"
+      CAPPUCCINO_HOST: "${CAPPUCCINO_HOST:?}"
+      CAPPUCCINO_PORT: "${CAPPUCCINO_PORT:-6697}"
+      CAPPUCCINO_SSL: "${CAPPUCCINO_SSL:-true}"
+      CAPPUCCINO_DATABASE__URI: "${CAPPUCCINO_DATABASE__URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}}"
     volumes:
       - "postgres_18_socket:/run/postgresql"
       - "${BASE_DIR:-.}/config/cappuccino:/config"
