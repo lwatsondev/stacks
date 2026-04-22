@@ -158,28 +158,6 @@ services:
           cpus: "${BAZARR_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${BAZARR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  tautulli:
-    image: "ghcr.io/linuxserver/tautulli:latest"
-    container_name: "tautulli"
-    restart: "unless-stopped"
-    depends_on:
-      - "plex"
-    environment:
-      TZ: "${TZ:-UTC}"
-      PGID: "${TAUTULLI_PGID:-${PGID:-1000}}"
-      PUID: "${TAUTULLI_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
-    volumes:
-      - "${BASE_DIR:-.}/config/tautulli:/config"
-      - "${BASE_DIR:-.}/config/plex/Library/Application Support/Plex Media Server/Logs:/plex_logs:ro"
-    networks:
-      - "mediaserver"
-    deploy:
-      resources:
-        limits:
-          cpus: "${TAUTULLI_CPU_LIMIT:-${CPU_LIMIT:-0}}"
-          memory: "${TAUTULLI_MEM_LIMIT:-${MEM_LIMIT:-0}}"
-
 networks:
   mediaserver:
     name: "mediaserver"
