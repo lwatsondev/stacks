@@ -73,7 +73,7 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-gitea}"
     volumes:
       - "${BASE_DIR:-.}/data/db:/var/lib/postgresql"
-      - "${BASE_DIR:-.}/config/db/18:/etc/postgresql"
+      - "${BASE_DIR:-.}/config/db:/etc/postgresql"
       - "postgres_18_socket:/run/postgresql"
     tmpfs:
       - "/run"
