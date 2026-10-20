@@ -1,0 +1,31 @@
+[project]
+name = "alice"
+description = "Runtime dependencies for the alice image"
+version = "0.0.0"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "inotify",
+    "numpy",
+    "onnx",
+    "onnxruntime",
+    "onnxslim",
+    "opencv-python-headless",
+    "pillow",
+    "torch",
+    "torchvision",
+    "ultralytics",
+]
+
+[tool.uv]
+package = false
+# Ultralytics pulls in the GUI build, only the headless one is wanted.
+override-dependencies = ["opencv-python; sys_platform == 'never'"]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

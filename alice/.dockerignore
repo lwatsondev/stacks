@@ -1,0 +1,6 @@
+**
+
+!rootfs/*
+!pyproject.toml
+!uv.lock
+!.python-version

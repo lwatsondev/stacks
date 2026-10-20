@@ -1,0 +1,53 @@
+---
+services:
+  alice:
+    image: "alice:local"
+    build:
+      context: "."
+      target: "production"
+    pull_policy: "build"
+    container_name: "alice"
+    restart: "unless-stopped"
+    init: true
+    user: "${ALICE_PUID:-${PUID:-1000}}:${ALICE_PGID:-${PGID:-1000}}"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
+    environment:
+      TZ: "${TZ:-UTC}"
+      ALICE_PORT: "${ALICE_PORT:-8080}"
+    volumes:
+      - "${BASE_DIR:-.}/config:/app/config"
+      - "${BASE_DIR:-.}/data/datasets:/app/datasets"
+      - "${BASE_DIR:-.}/data/models:/app/models"
+      - type: "bind"
+        source: "${ALICE_FRIGATE_DIR:-./data/frigate}/data/clips"
+        target: "/app/clips"
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: "bind"
+        source: "${ALICE_FRIGATE_DIR:-./data/frigate}/data/exports"
+        target: "/app/exports"
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: "bind"
+        source: "${ALICE_FRIGATE_DIR:-./data/frigate}/config"
+        target: "/app/frigate"
+        read_only: true
+        bind:
+          create_host_path: false
+    networks:
+      - "alice"
+    deploy:
+      resources:
+        limits:
+          cpus: "${ALICE_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${ALICE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+
+networks:
+  alice:
+    name: "alice"

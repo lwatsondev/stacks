@@ -1,0 +1,2 @@
+# The sshfs mount of the Frigate host, whose own .gitkeep files evade the root rules
+data/frigate/
