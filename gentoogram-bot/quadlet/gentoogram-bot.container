@@ -1,0 +1,18 @@
+[Unit]
+Description=gentoogram-bot
+
+[Container]
+Image=ghcr.io/lwatsondev/gentoogram-bot:main
+ContainerName=gentoogram-bot
+RunInit=true
+ReadOnly=true
+EnvironmentFile=../.env
+# Listen on IPv6 too, since pasta forwards IPv6 connections as IPv6.
+Environment=CFG_WEBHOOK__LISTEN=
+Volume=../config:/config
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
