@@ -1,0 +1,26 @@
+[Unit]
+Description=gitea database
+
+[Container]
+Image=docker.io/library/postgres:18
+ContainerName=gitea_db_18
+RunInit=true
+EnvironmentFile=../.env
+Environment=POSTGRES_DB=gitea
+Environment=POSTGRES_USER=gitea
+Exec=postgres -c config_file=/etc/postgresql/postgresql.conf
+Volume=../data/db:/var/lib/postgresql
+Volume=../config/db:/etc/postgresql
+Network=gitea.network
+NetworkAlias=db-18
+HealthCmd=pg_isready -q --dbname=gitea --username=gitea --host=127.0.0.1
+HealthInterval=10s
+HealthTimeout=5s
+HealthStartPeriod=10s
+Notify=healthy
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
