@@ -1,0 +1,24 @@
+[Unit]
+Description=vaultwarden
+Requires=db-18.service
+After=db-18.service
+
+[Container]
+Image=docker.io/vaultwarden/server:latest
+ContainerName=vaultwarden
+RunInit=true
+ReadOnly=true
+EnvironmentFile=../.env
+Volume=../data/vaultwarden:/data
+Network=vaultwarden.network
+# Podman ignores the image's HEALTHCHECK because the image is in OCI format.
+HealthCmd=/healthcheck.sh
+HealthInterval=10s
+HealthTimeout=5s
+HealthStartPeriod=10s
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
