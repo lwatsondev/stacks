@@ -5,6 +5,7 @@
 !**/.gitkeep
 
 compose.override.yaml
+*.container.d/
 .nobackup
 
 .vscode/

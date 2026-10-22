@@ -1,0 +1,24 @@
+[Unit]
+Description=rehome
+
+[Container]
+Image=ghcr.io/lwatsondev/rehome:main
+ContainerName=rehome
+RunInit=true
+ReadOnly=true
+EnvironmentFile=../.env
+# Listen on IPv6 too, since pasta forwards IPv6 connections as IPv6.
+Environment=GUNICORN_BIND=[::]:5000
+Volume=../config:/config
+Volume=../data:/data
+# Podman ignores the image's HEALTHCHECK because the image is in OCI format.
+HealthCmd=/docker-healthcheck.sh
+HealthInterval=10s
+HealthTimeout=5s
+HealthStartPeriod=10s
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
