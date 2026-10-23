@@ -1,0 +1,21 @@
+[Unit]
+Description=sonarr
+Wants=deluge.service prowlarr.service
+After=deluge.service prowlarr.service
+
+[Container]
+Image=ghcr.io/linuxserver/sonarr:latest
+ContainerName=sonarr
+EnvironmentFile=../.env
+Volume=../config/sonarr:/config
+Volume=../data:/data
+Tmpfs=/run:U,exec
+Network=mediaserver.network
+# Deluge runs on pasta outside this network, so reach it through the host.
+AddHost=deluge:host-gateway
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

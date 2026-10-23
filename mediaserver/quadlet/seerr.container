@@ -1,0 +1,18 @@
+[Unit]
+Description=seerr
+Requires=plex.service
+Wants=radarr.service sonarr.service
+After=plex.service radarr.service sonarr.service
+
+[Container]
+Image=ghcr.io/seerr-team/seerr:latest
+ContainerName=seerr
+EnvironmentFile=../.env
+Volume=../config/seerr:/app/config
+Network=mediaserver.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

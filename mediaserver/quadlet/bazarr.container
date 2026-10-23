@@ -1,0 +1,19 @@
+[Unit]
+Description=bazarr
+Wants=radarr.service sonarr.service
+After=radarr.service sonarr.service
+
+[Container]
+Image=ghcr.io/linuxserver/bazarr:latest
+ContainerName=bazarr
+EnvironmentFile=../.env
+Volume=../config/bazarr:/config
+Volume=../data:/data
+Tmpfs=/run:U,exec
+Network=mediaserver.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

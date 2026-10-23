@@ -1,0 +1,24 @@
+[Unit]
+Description=plex
+
+[Container]
+Image=ghcr.io/linuxserver/plex:latest
+ContainerName=plex
+EnvironmentFile=../.env
+Environment=VERSION=docker
+Volume=../config/plex:/config
+Volume=../data/media:/media:ro
+Tmpfs=/run:U,exec
+Tmpfs=/transcode:U,size=2G
+Network=mediaserver.network
+HealthCmd=curl -fSs http://localhost:32400/identity
+HealthInterval=10s
+HealthTimeout=5s
+HealthStartPeriod=10s
+Notify=healthy
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

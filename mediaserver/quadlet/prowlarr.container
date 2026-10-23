@@ -1,0 +1,16 @@
+[Unit]
+Description=prowlarr
+
+[Container]
+Image=ghcr.io/linuxserver/prowlarr:latest
+ContainerName=prowlarr
+EnvironmentFile=../.env
+Volume=../config/prowlarr:/config
+Tmpfs=/run:U,exec
+Network=mediaserver.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
