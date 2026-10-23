@@ -1,0 +1,26 @@
+[Unit]
+Description=PostgreSQL
+
+[Container]
+Image=docker.io/library/postgres:18
+ContainerName=cappuccino-postgres
+RunInit=true
+EnvironmentFile=../.env
+Environment=POSTGRES_DB=cappuccino
+Environment=POSTGRES_USER=cappuccino
+Exec=postgres -c config_file=/etc/postgresql/postgresql.conf
+Volume=../data/postgres:/var/lib/postgresql
+Volume=../config/postgres:/etc/postgresql
+Network=cappuccino.network
+NetworkAlias=postgres
+HealthCmd=pg_isready -q --dbname=cappuccino --username=cappuccino --host=127.0.0.1
+HealthInterval=10s
+HealthTimeout=5s
+HealthStartPeriod=10s
+Notify=healthy
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

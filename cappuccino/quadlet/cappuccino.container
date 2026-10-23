@@ -1,0 +1,20 @@
+[Unit]
+Description=Cappuccino IRC Bot
+Requires=postgres.service
+After=postgres.service
+
+[Container]
+Image=ghcr.io/lwatsondev/cappuccino:main
+ContainerName=cappuccino
+RunInit=true
+ReadOnly=true
+EnvironmentFile=../.env
+Volume=../config/cappuccino:/config
+Tmpfs=/tmp
+Network=cappuccino.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
