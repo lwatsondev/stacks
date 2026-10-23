@@ -1,5 +1,5 @@
 [Unit]
-Description=zigbee2mqtt
+Description=Zigbee2MQTT
 
 [Container]
 Image=ghcr.io/koenkk/zigbee2mqtt:latest

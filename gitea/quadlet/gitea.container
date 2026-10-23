@@ -1,5 +1,5 @@
 [Unit]
-Description=gitea
+Description=Gitea
 Requires=postgres.service redis.service
 After=postgres.service redis.service
 

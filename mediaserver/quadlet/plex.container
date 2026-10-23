@@ -1,5 +1,5 @@
 [Unit]
-Description=plex
+Description=Plex Media Server
 
 [Container]
 Image=ghcr.io/linuxserver/plex:latest

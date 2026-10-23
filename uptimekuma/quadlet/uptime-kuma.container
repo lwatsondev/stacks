@@ -1,5 +1,5 @@
 [Unit]
-Description=uptime-kuma
+Description=Uptime Kuma
 
 [Container]
 Image=docker.io/louislam/uptime-kuma:2-slim-rootless

@@ -1,5 +1,5 @@
 [Unit]
-Description=deluge
+Description=Deluge
 
 [Container]
 Image=ghcr.io/linuxserver/deluge:latest

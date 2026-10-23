@@ -1,5 +1,5 @@
 [Unit]
-Description=sonarr
+Description=Sonarr
 Wants=deluge.service prowlarr.service
 After=deluge.service prowlarr.service
 

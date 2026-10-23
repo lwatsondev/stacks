@@ -1,5 +1,5 @@
 [Unit]
-Description=diun
+Description=Diun
 
 [Container]
 Image=docker.io/crazymax/diun:latest

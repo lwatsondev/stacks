@@ -1,5 +1,5 @@
 [Unit]
-Description=seerr
+Description=Seerr
 Requires=plex.service
 Wants=radarr.service sonarr.service
 After=plex.service radarr.service sonarr.service

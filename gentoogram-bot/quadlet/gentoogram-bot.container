@@ -1,5 +1,5 @@
 [Unit]
-Description=gentoogram-bot
+Description=Gentoogram Telegram Bot
 
 [Container]
 Image=ghcr.io/lwatsondev/gentoogram-bot:main

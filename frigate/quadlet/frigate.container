@@ -1,5 +1,5 @@
 [Unit]
-Description=frigate
+Description=Frigate
 
 [Container]
 Image=ghcr.io/blakeblackshear/frigate:stable

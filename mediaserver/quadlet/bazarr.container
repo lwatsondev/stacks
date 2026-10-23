@@ -1,5 +1,5 @@
 [Unit]
-Description=bazarr
+Description=Bazarr
 Wants=radarr.service sonarr.service
 After=radarr.service sonarr.service
 

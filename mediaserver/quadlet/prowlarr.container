@@ -1,5 +1,5 @@
 [Unit]
-Description=prowlarr
+Description=Prowlarr
 
 [Container]
 Image=ghcr.io/linuxserver/prowlarr:latest

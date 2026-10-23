@@ -1,5 +1,5 @@
 [Unit]
-Description=znc
+Description=ZNC
 Wants=oidentd.service
 After=oidentd.service
 
