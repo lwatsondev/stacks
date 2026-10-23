@@ -1,0 +1,16 @@
+[Unit]
+Description=oidentd
+
+[Container]
+Image=oidentd.build
+ContainerName=oidentd
+RunInit=true
+ReadOnly=true
+Volume=../data:/config:ro
+Network=host
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

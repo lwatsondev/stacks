@@ -1,0 +1,7 @@
+[Unit]
+Description=oidentd image
+
+[Build]
+ImageTag=localhost/oidentd
+File=../oidentd/Dockerfile
+SetWorkingDirectory=file

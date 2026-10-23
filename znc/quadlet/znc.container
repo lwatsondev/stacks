@@ -1,0 +1,20 @@
+[Unit]
+Description=znc
+Wants=oidentd.service
+After=oidentd.service
+
+[Container]
+Image=ghcr.io/linuxserver/znc:latest
+ContainerName=znc
+Entrypoint=/usr/local/bin/znc
+Exec=-d /config --foreground
+RunInit=true
+EnvironmentFile=../.env
+Volume=../data:/config
+Network=host
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
