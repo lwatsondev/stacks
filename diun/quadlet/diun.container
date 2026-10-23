@@ -1,0 +1,20 @@
+[Unit]
+Description=diun
+
+[Container]
+Image=docker.io/crazymax/diun:latest
+ContainerName=diun
+Exec=serve
+RunInit=true
+EnvironmentFile=../.env
+Environment="DIUN_WATCH_SCHEDULE=0 */6 * * *"
+Environment=DIUN_WATCH_WORKERS=4
+Environment=DIUN_WATCH_JITTER=60s
+Volume=../data:/data
+Volume=../config:/etc/diun
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
