@@ -3,6 +3,7 @@ Description=oidentd
 
 [Container]
 Image=oidentd.build
+AutoUpdate=local
 ContainerName=oidentd
 RunInit=true
 ReadOnly=true

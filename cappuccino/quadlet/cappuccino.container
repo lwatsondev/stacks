@@ -5,6 +5,7 @@ After=postgres.service
 
 [Container]
 Image=ghcr.io/lwatsondev/cappuccino:main
+AutoUpdate=registry
 ContainerName=cappuccino
 RunInit=true
 ReadOnly=true

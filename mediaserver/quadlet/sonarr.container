@@ -5,6 +5,7 @@ After=deluge.service prowlarr.service
 
 [Container]
 Image=ghcr.io/linuxserver/sonarr:latest
+AutoUpdate=registry
 ContainerName=sonarr
 EnvironmentFile=../.env
 Volume=../config/sonarr:/config

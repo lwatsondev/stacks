@@ -5,6 +5,7 @@ After=deluge.service prowlarr.service
 
 [Container]
 Image=ghcr.io/linuxserver/radarr:latest
+AutoUpdate=registry
 ContainerName=radarr
 EnvironmentFile=../.env
 Volume=../config/radarr:/config

@@ -5,6 +5,7 @@ After=oidentd.service
 
 [Container]
 Image=ghcr.io/linuxserver/znc:latest
+AutoUpdate=registry
 ContainerName=znc
 Entrypoint=/usr/local/bin/znc
 Exec=-d /config --foreground

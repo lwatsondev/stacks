@@ -3,6 +3,7 @@ Description=Diun
 
 [Container]
 Image=docker.io/crazymax/diun:latest
+AutoUpdate=registry
 ContainerName=diun
 Exec=serve
 RunInit=true

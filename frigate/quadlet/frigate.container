@@ -3,6 +3,7 @@ Description=Frigate
 
 [Container]
 Image=ghcr.io/blakeblackshear/frigate:stable
+AutoUpdate=registry
 ContainerName=frigate
 EnvironmentFile=../.env
 Volume=../config:/config

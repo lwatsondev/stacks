@@ -3,6 +3,7 @@ Description=Zigbee2MQTT
 
 [Container]
 Image=ghcr.io/koenkk/zigbee2mqtt:latest
+AutoUpdate=registry
 ContainerName=zigbee2mqtt
 ReadOnly=true
 # Keeps the host user's dialout group so the serial adapter is usable.

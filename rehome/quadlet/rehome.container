@@ -3,6 +3,7 @@ Description=Rehome
 
 [Container]
 Image=ghcr.io/lwatsondev/rehome:main
+AutoUpdate=registry
 ContainerName=rehome
 RunInit=true
 ReadOnly=true

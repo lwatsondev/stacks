@@ -3,6 +3,7 @@ Description=Deluge
 
 [Container]
 Image=ghcr.io/linuxserver/deluge:latest
+AutoUpdate=registry
 ContainerName=deluge
 EnvironmentFile=../.env
 Volume=../config/deluge:/config

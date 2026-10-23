@@ -3,6 +3,7 @@ Description=Plex Media Server
 
 [Container]
 Image=ghcr.io/linuxserver/plex:latest
+AutoUpdate=registry
 ContainerName=plex
 EnvironmentFile=../.env
 Environment=VERSION=docker

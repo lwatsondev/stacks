@@ -3,6 +3,7 @@ Description=Caddy
 
 [Container]
 Image=ghcr.io/caddybuilds/caddy-cloudflare:latest
+AutoUpdate=registry
 ContainerName=caddy
 RunInit=true
 ReadOnly=true

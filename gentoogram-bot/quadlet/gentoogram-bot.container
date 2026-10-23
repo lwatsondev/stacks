@@ -3,6 +3,7 @@ Description=Gentoogram Telegram Bot
 
 [Container]
 Image=ghcr.io/lwatsondev/gentoogram-bot:main
+AutoUpdate=registry
 ContainerName=gentoogram-bot
 RunInit=true
 ReadOnly=true

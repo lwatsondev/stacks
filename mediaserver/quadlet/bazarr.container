@@ -5,6 +5,7 @@ After=radarr.service sonarr.service
 
 [Container]
 Image=ghcr.io/linuxserver/bazarr:latest
+AutoUpdate=registry
 ContainerName=bazarr
 EnvironmentFile=../.env
 Volume=../config/bazarr:/config

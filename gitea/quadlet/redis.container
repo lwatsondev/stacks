@@ -3,6 +3,7 @@ Description=Valkey
 
 [Container]
 Image=docker.io/valkey/valkey:latest
+AutoUpdate=registry
 ContainerName=gitea-redis
 RunInit=true
 Exec=--dir /data --appendonly yes

@@ -3,6 +3,7 @@ Description=Prowlarr
 
 [Container]
 Image=ghcr.io/linuxserver/prowlarr:latest
+AutoUpdate=registry
 ContainerName=prowlarr
 EnvironmentFile=../.env
 Volume=../config/prowlarr:/config

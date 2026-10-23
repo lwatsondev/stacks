@@ -6,6 +6,7 @@ After=plex.service radarr.service sonarr.service
 
 [Container]
 Image=ghcr.io/seerr-team/seerr:latest
+AutoUpdate=registry
 ContainerName=seerr
 EnvironmentFile=../.env
 Volume=../config/seerr:/app/config
