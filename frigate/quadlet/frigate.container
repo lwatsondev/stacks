@@ -1,0 +1,31 @@
+[Unit]
+Description=frigate
+
+[Container]
+Image=ghcr.io/blakeblackshear/frigate:stable
+ContainerName=frigate
+EnvironmentFile=../.env
+Volume=../config:/config
+Volume=../data:/media/frigate
+ShmSize=512M
+Tmpfs=/tmp/cache:size=1G
+AddDevice=/dev/dri
+# Keeps the host user's render group so the GPU node is usable.
+GroupAdd=keep-groups
+PublishPort=8971:8971
+PublishPort=8554:8554
+PublishPort=8555:8555
+PublishPort=8555:8555/udp
+HealthCmd=test -f /dev/shm/.frigate-is-stopping || curl --fail --silent --show-error http://127.0.0.1:5000/api/version
+HealthInterval=15s
+HealthTimeout=5s
+HealthStartPeriod=300s
+Notify=healthy
+StopTimeout=30
+
+[Service]
+Restart=always
+TimeoutStartSec=600
+
+[Install]
+WantedBy=default.target
