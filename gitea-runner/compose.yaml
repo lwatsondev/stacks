@@ -2,7 +2,7 @@
 services:
   gitea-runner:
     image: "gitea/act_runner:latest"
-    container_name: "gitea_runner"
+    container_name: "gitea-runner"
     restart: "unless-stopped"
     env_file:
       - path: ".env"

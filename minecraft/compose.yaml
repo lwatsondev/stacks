@@ -74,9 +74,9 @@ services:
           cpus: "${SERVER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${SERVER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  db:
+  mariadb:
     image: "mariadb:latest"
-    container_name: "minecraft_db"
+    container_name: "minecraft-mariadb"
     restart: "unless-stopped"
     init: true
     user: "${MARIADB_PUID:-${PUID:-1000}}:${MARIADB_PGID:-${PGID:-1000}}"
@@ -89,7 +89,7 @@ services:
       MARIADB_PASSWORD: "${MARIADB_PASSWORD:-minecraft}"
       MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD:-minecraft}"
     volumes:
-      - "${BASE_DIR:-.}/data/db:/var/lib/mysql"
+      - "${BASE_DIR:-.}/data/mariadb:/var/lib/mysql"
     deploy:
       resources:
         limits:

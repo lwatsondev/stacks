@@ -3,16 +3,16 @@ Description=gitea database
 
 [Container]
 Image=docker.io/library/postgres:18
-ContainerName=gitea_db_18
+ContainerName=gitea-postgres
 RunInit=true
 EnvironmentFile=../.env
 Environment=POSTGRES_DB=gitea
 Environment=POSTGRES_USER=gitea
 Exec=postgres -c config_file=/etc/postgresql/postgresql.conf
-Volume=../data/db:/var/lib/postgresql
-Volume=../config/db:/etc/postgresql
+Volume=../data/postgres:/var/lib/postgresql
+Volume=../config/postgres:/etc/postgresql
 Network=gitea.network
-NetworkAlias=db-18
+NetworkAlias=postgres
 HealthCmd=pg_isready -q --dbname=gitea --username=gitea --host=127.0.0.1
 HealthInterval=10s
 HealthTimeout=5s

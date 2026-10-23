@@ -8,7 +8,7 @@ services:
     read_only: true
     user: "${VAULTWARDEN_PUID:-${PUID:-1000}}:${VAULTWARDEN_PGID:-${PGID:-1000}}"
     depends_on:
-      db-18:
+      postgres:
         condition: "service_healthy"
     env_file:
       - path: ".env"
@@ -17,7 +17,7 @@ services:
         required: false
     environment:
       TZ: "${TZ:-UTC}"
-      DATABASE_URL: "${DATABASE_URL:-postgresql://${POSTGRES_USER:-vaultwarden}:${POSTGRES_PASSWORD:-vaultwarden}@${POSTGRES_HOST:-db-18}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-vaultwarden}}"
+      DATABASE_URL: "${DATABASE_URL:-postgresql://${POSTGRES_USER:-vaultwarden}:${POSTGRES_PASSWORD:-vaultwarden}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-vaultwarden}}"
       ADMIN_TOKEN: "${ADMIN_TOKEN:?}"
     volumes:
       - "${BASE_DIR:-.}/data/vaultwarden:/data"
@@ -37,9 +37,9 @@ services:
       interval: "10s"
       timeout: "5s"
 
-  db-18:
+  postgres:
     image: "postgres:18"
-    container_name: "vaultwarden_db_18"
+    container_name: "vaultwarden-postgres"
     restart: "unless-stopped"
     init: true
     user: "${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}"
@@ -55,8 +55,8 @@ services:
       POSTGRES_USER: "${POSTGRES_USER:-vaultwarden}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-vaultwarden}"
     volumes:
-      - "${BASE_DIR:-.}/data/db:/var/lib/postgresql"
-      - "${BASE_DIR:-.}/config/db:/etc/postgresql"
+      - "${BASE_DIR:-.}/data/postgres:/var/lib/postgresql"
+      - "${BASE_DIR:-.}/config/postgres:/etc/postgresql"
     healthcheck:
       test:
         - "CMD-SHELL"

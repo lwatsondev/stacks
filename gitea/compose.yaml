@@ -6,7 +6,7 @@ services:
     restart: "unless-stopped"
     user: "${GITEA_PUID:-${PUID:-1000}}:${GITEA_PGID:-${PGID:-1000}}"
     depends_on:
-      db-18:
+      postgres:
         condition: "service_healthy"
       redis:
         condition: "service_healthy"
@@ -20,7 +20,7 @@ services:
       USER_UID: "${GITEA_PUID:-${PUID:-1000}}"
       USER_GID: "${GITEA_PGID:-${PGID:-1000}}"
       GITEA__database__DB_TYPE: "${GITEA__database__DB_TYPE:-postgres}"
-      GITEA__database__HOST: "${POSTGRES_HOST:-db-18}:${POSTGRES_PORT:-5432}"
+      GITEA__database__HOST: "${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}"
       GITEA__database__NAME: "${POSTGRES_DB:-gitea}"
       GITEA__database__USER: "${POSTGRES_USER:-gitea}"
       GITEA__database__PASSWD: "${POSTGRES_PASSWORD:-gitea}"
@@ -52,9 +52,9 @@ services:
           cpus: "${GITEA_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${GITEA_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  db-18:
+  postgres:
     image: "postgres:18"
-    container_name: "gitea_db_18"
+    container_name: "gitea-postgres"
     restart: "unless-stopped"
     init: true
     user: "${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}"
@@ -70,8 +70,8 @@ services:
       POSTGRES_USER: "${POSTGRES_USER:-gitea}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-gitea}"
     volumes:
-      - "${BASE_DIR:-.}/data/db:/var/lib/postgresql"
-      - "${BASE_DIR:-.}/config/db:/etc/postgresql"
+      - "${BASE_DIR:-.}/data/postgres:/var/lib/postgresql"
+      - "${BASE_DIR:-.}/config/postgres:/etc/postgresql"
     healthcheck:
       test:
         - "CMD-SHELL"
@@ -89,7 +89,7 @@ services:
 
   redis:
     image: "valkey/valkey:latest"
-    container_name: "gitea_redis"
+    container_name: "gitea-redis"
     command:
       - "--dir /data"
       - "--appendonly yes"

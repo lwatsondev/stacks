@@ -1,7 +1,7 @@
 [Unit]
 Description=vaultwarden
-Requires=db-18.service
-After=db-18.service
+Requires=postgres.service
+After=postgres.service
 
 [Container]
 Image=docker.io/vaultwarden/server:latest

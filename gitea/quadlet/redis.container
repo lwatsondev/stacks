@@ -3,7 +3,7 @@ Description=gitea redis
 
 [Container]
 Image=docker.io/valkey/valkey:latest
-ContainerName=gitea_redis
+ContainerName=gitea-redis
 RunInit=true
 Exec=--dir /data --appendonly yes
 Volume=../data/redis:/data

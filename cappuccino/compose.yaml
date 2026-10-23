@@ -8,7 +8,7 @@ services:
     read_only: true
     user: "${CAPPUCCINO_PUID:-${PUID:-1000}}:${CAPPUCCINO_PGID:-${PGID:-1000}}"
     depends_on:
-      db-18:
+      postgres:
         condition: "service_healthy"
     env_file:
       - path: ".env"
@@ -23,7 +23,7 @@ services:
       CAPPUCCINO_HOST: "${CAPPUCCINO_HOST:?}"
       CAPPUCCINO_PORT: "${CAPPUCCINO_PORT:-6697}"
       CAPPUCCINO_SSL: "${CAPPUCCINO_SSL:-true}"
-      CAPPUCCINO_DATABASE__URI: "${CAPPUCCINO_DATABASE__URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@${POSTGRES_HOST:-db-18}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-cappuccino}}"
+      CAPPUCCINO_DATABASE__URI: "${CAPPUCCINO_DATABASE__URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-cappuccino}}"
     volumes:
       - "${BASE_DIR:-.}/config/cappuccino:/config"
     tmpfs:
@@ -36,9 +36,9 @@ services:
           cpus: "${CAPPUCCINO_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${CAPPUCCINO_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  db-18:
+  postgres:
     image: "postgres:18"
-    container_name: "cappuccino_db_18"
+    container_name: "cappuccino-postgres"
     restart: "unless-stopped"
     init: true
     user: "${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}"
@@ -54,8 +54,8 @@ services:
       POSTGRES_USER: "${POSTGRES_USER:-cappuccino}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-cappuccino}"
     volumes:
-      - "${BASE_DIR:-.}/data/db:/var/lib/postgresql"
-      - "${BASE_DIR:-.}/config/db:/etc/postgresql"
+      - "${BASE_DIR:-.}/data/postgres:/var/lib/postgresql"
+      - "${BASE_DIR:-.}/config/postgres:/etc/postgresql"
     healthcheck:
       test:
         - "CMD-SHELL"

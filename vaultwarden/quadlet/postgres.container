@@ -3,16 +3,16 @@ Description=vaultwarden database
 
 [Container]
 Image=docker.io/library/postgres:18
-ContainerName=vaultwarden_db_18
+ContainerName=vaultwarden-postgres
 RunInit=true
 EnvironmentFile=../.env
 Environment=POSTGRES_DB=vaultwarden
 Environment=POSTGRES_USER=vaultwarden
 Exec=postgres -c config_file=/etc/postgresql/postgresql.conf
-Volume=../data/db:/var/lib/postgresql
-Volume=../config/db:/etc/postgresql
+Volume=../data/postgres:/var/lib/postgresql
+Volume=../config/postgres:/etc/postgresql
 Network=vaultwarden.network
-NetworkAlias=db-18
+NetworkAlias=postgres
 HealthCmd=pg_isready -q --dbname=vaultwarden --username=vaultwarden --host=127.0.0.1
 HealthInterval=10s
 HealthTimeout=5s
