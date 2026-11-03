@@ -27,18 +27,22 @@ RUN --mount=type=cache,target=${UV_CACHE_DIR} \
 ## Assemble alice.py from upstream source
 FROM python-base AS alice-build
 
-ARG ALICE_REF=7e10a292d9eac421176d33822aa14f9eb5a56550
+ARG ALICE_REF=17efe42443d1233127aad3b1e148c8903f2d92ae
 
 ADD https://github.com/simoncirstoiu/alice.git#${ALICE_REF} /src
+COPY patches/ /patches/
 
-RUN mkdir /out \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && apt-get install --no-install-recommends -y patch \
+    && for p in /patches/*.patch; do patch -d /src -p1 < "$p"; done \
+    && mkdir /out \
     && uv run --no-project python /src/builder.py --no-venv -o /out/alice.py
 
 
 ## Base image
 FROM python-base AS app-base
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=private \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates \
     libglib2.0-0 \
@@ -68,7 +72,7 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 ## Production image
 FROM app-base AS production
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=private \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && apt-get install --no-install-recommends -y \
     curl \
     && rm -rf /var/lib/apt/lists/*

@@ -9,10 +9,16 @@ usage() {
     echo "The remote path must contain Frigate's config/ and data/{clips,exports}." >&2
 }
 
-[ $# -eq 1 ] || { usage; exit 1; }
+[ $# -eq 1 ] || {
+    usage
+    exit 1
+}
 remote="$1"
 
-command -v sshfs > /dev/null || { echo "sshfs is not installed" >&2; exit 1; }
+command -v sshfs > /dev/null || {
+    echo "sshfs is not installed" >&2
+    exit 1
+}
 
 cd "$(dirname "$0")/.."
 mnt="data/frigate"
@@ -29,6 +35,6 @@ fi
 
 mkdir -p "$mnt"
 
-# The Docker daemon needs allow_other, which needs user_allow_other in /etc/fuse.conf.
+# The container runtime needs allow_other, which needs user_allow_other in /etc/fuse.conf.
 sshfs -o ro,allow_other,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3 "$remote" "$mnt"
 echo "Mounted $remote on $mnt"

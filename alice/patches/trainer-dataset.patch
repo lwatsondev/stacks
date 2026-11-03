@@ -1,0 +1,79 @@
+diff --git i/src/assets/trainer.js w/src/assets/trainer.js
+index 19f0712..3a9792f 100644
+--- i/src/assets/trainer.js
++++ w/src/assets/trainer.js
+@@ -352,7 +352,7 @@ function runAnnotate() {
+   fetch('/api/trainer/reannotate', {
+     method: 'POST',
+     headers: {'Content-Type': 'application/json'},
+-    body: JSON.stringify({ teacher: teacher, conf: conf, classes: classes, merge: merge })
++    body: JSON.stringify({ teacher: teacher, conf: conf, classes: classes, merge: merge, dataset: document.getElementById('trainerDatasetSel')?.value || '' })
+   }).catch(e => { stopTrainerPoll(); toast('Annotation error: ' + e, true); _resetStep('annotate'); });
+ }
+
+@@ -907,7 +907,7 @@ function runExport() {
+   fetch('/api/trainer/export', {
+     method: 'POST',
+     headers: {'Content-Type': 'application/json'},
+-    body: JSON.stringify({ max_images: maxImages })
++    body: JSON.stringify({ max_images: maxImages, dataset: document.getElementById('trainerDatasetSel')?.value || '' })
+   }).catch(e => { stopTrainerPoll(); toast('Export error: ' + e, true); _resetStep('export'); });
+ }
+
+@@ -928,6 +928,7 @@ function runDedup(dryRun) {
+     method: 'POST',
+     headers: {'Content-Type': 'application/json'},
+     body: JSON.stringify({
++      dataset: document.getElementById('trainerDatasetSel')?.value || '',
+       boxes: doBoxes, phash: doPhash, nms: doNms,
+       box_iou: boxIou, hamming: hamming, nms_iou: nmsIou,
+       dry_run: dryRun
+@@ -952,7 +953,7 @@ function runTrain() {
+   fetch('/api/trainer/train', {
+     method: 'POST',
+     headers: {'Content-Type': 'application/json'},
+-    body: JSON.stringify({ model: model, epochs: epochs, batch: batch, lr: lr, lrf: lrf, imgsz: imgsz, freeze: freeze, augment: augment })
++    body: JSON.stringify({ model: model, epochs: epochs, batch: batch, lr: lr, lrf: lrf, imgsz: imgsz, freeze: freeze, augment: augment, dataset: document.getElementById('trainerDatasetSel')?.value || '' })
+   }).catch(e => { stopTrainerPoll(); toast('Training error: ' + e, true); _resetStep('train'); });
+ }
+
+diff --git i/src/handler_trainer.py w/src/handler_trainer.py
+index 468ef56..58179f4 100644
+--- i/src/handler_trainer.py
++++ w/src/handler_trainer.py
+@@ -118,7 +118,7 @@ def _trainer_dataset(tds):
+
+ def _post_trainer_export(body: dict) -> tuple[int, str, bytes]:
+     max_images = int(body.get("max_images", 0))
+-    _tds = STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
++    _tds = body.get("dataset") or STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
+
+     def _run_export():
+         with _trainer_dataset(_tds):
+@@ -139,7 +139,7 @@ def _post_trainer_reannotate(body: dict) -> tuple[int, str, bytes]:
+     ann_conf = float(body.get("conf", 0.5))
+     classes = set(int(c) for c in body.get("classes", conf("DEFAULT_CLASSES")))
+     merge = body.get("merge", False)
+-    _tds = STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
++    _tds = body.get("dataset") or STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
+
+     def _run_annotate():
+         with _trainer_dataset(_tds):
+@@ -152,7 +152,7 @@ def _post_trainer_reannotate(body: dict) -> tuple[int, str, bytes]:
+
+
+ def _post_trainer_dedup(body: dict) -> tuple[int, str, bytes]:
+-    _tds = STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
++    _tds = body.get("dataset") or STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
+     _dry_run = body.get("dry_run", False)
+
+     def _run_dedup():
+@@ -186,7 +186,7 @@ def _post_trainer_train(body: dict) -> tuple[int, str, bytes]:
+     _imgsz = int(body.get("imgsz", conf("IMAGE_SIZE")))
+     _freeze = int(body.get("freeze", conf("FREEZE_LAYERS")))
+     _augment = bool(body.get("augment", conf("AUGMENTATION")))
+-    _tds = STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
++    _tds = body.get("dataset") or STATE["TRAINER_DATASET"] or STATE["DATASET_DIR"]
+
+     def _run_train():
+         with _trainer_dataset(_tds):

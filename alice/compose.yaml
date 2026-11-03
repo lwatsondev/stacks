@@ -7,7 +7,10 @@ services:
       target: "production"
     pull_policy: "build"
     container_name: "alice"
-    restart: "unless-stopped"
+    # I don't really intend to run this as a long-running service on a remote machine.
+    # My use case is running Alice locally and uploading the resulting model to a Frigate host.
+    # It doesn't need to be up all the time to do that.
+    restart: "false"
     init: true
     user: "${ALICE_PUID:-${PUID:-1000}}:${ALICE_PGID:-${PGID:-1000}}"
     env_file:

@@ -1,6 +1,9 @@
 **
 
+!patches/*
 !rootfs/*
 !pyproject.toml
 !uv.lock
 !.python-version
+!builder.py
+!src/**

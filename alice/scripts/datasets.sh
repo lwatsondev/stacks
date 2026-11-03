@@ -24,7 +24,10 @@ esac
 cd "$(dirname "$0")/../data/datasets"
 
 for d in default staging; do
-    [ -d "$d/images" ] || { echo "Dataset $d is missing, create it in alice: Viewer then Dataset in the left sidebar, then + Create New Dataset at the end of the dropdown at the far left of the top toolbar" >&2; exit 1; }
+    [ -d "$d/images" ] || {
+        echo "Dataset $d is missing, create it in alice: Viewer then Dataset in the left sidebar, then + Create New Dataset at the end of the dropdown at the far left of the top toolbar" >&2
+        exit 1
+    }
 done
 
 in_default() {
@@ -55,7 +58,10 @@ prune() {
 }
 
 merge() {
-    command -v jq > /dev/null || { echo "jq is not installed" >&2; exit 1; }
+    command -v jq > /dev/null || {
+        echo "jq is not installed" >&2
+        exit 1
+    }
     moved=0
     skipped=0
     # Files a dry run would move, so it can count what emptying staging deletes.
