@@ -15,6 +15,7 @@ Network=host
 
 [Service]
 Restart=always
+ExecReload=/usr/bin/podman exec caddy caddy reload --config /etc/caddy/Caddyfile
 
 [Install]
 WantedBy=default.target
