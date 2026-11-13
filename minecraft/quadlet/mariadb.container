@@ -1,0 +1,26 @@
+[Unit]
+Description=MariaDB
+
+[Container]
+Image=docker.io/library/mariadb:latest
+AutoUpdate=registry
+ContainerName=minecraft-mariadb
+RunInit=true
+ReadOnly=true
+UserNS=keep-id
+EnvironmentFile=../.env
+Volume=../data/mariadb:/var/lib/mysql
+Volume=../config/mariadb:/etc/mysql/conf.d:ro
+Network=host
+PodmanArgs=--memory=512m --memory-swap=512m
+HealthCmd=healthcheck.sh --connect --innodb_initialized
+HealthInterval=10s
+HealthTimeout=5s
+HealthStartPeriod=10s
+Notify=healthy
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
