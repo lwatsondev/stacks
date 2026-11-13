@@ -3,7 +3,6 @@
 **/data/**
 !**/data/**/
 !**/.gitkeep
-/minecraft/data/minecraft/config/.gitkeep
 
 compose.override.yaml
 *.container.d/
