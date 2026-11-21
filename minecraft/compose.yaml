@@ -1,100 +1,67 @@
 ---
 services:
-  proxy:
-    image: "itzg/bungeecord:latest"
-    container_name: "proxy"
+  minecraft:
+    image: "itzg/minecraft-server:latest"
+    container_name: "minecraft"
     restart: "unless-stopped"
-    user: "${PROXY_PUID:-${PUID:-1000}}:${PROXY_PGID:-${PGID:-1000}}"
+    read_only: true
+    user: "${PUID:-1000}:${PGID:-1000}"
     depends_on:
-      survival:
+      mariadb:
         condition: "service_healthy"
     stdin_open: true
     tty: true
+    stop_grace_period: "60s"
     env_file:
       - path: ".env"
         required: false
       - path: "stack.env"
         required: false
     environment:
-      TZ: "${TZ:-UTC}"
-      ENABLE_RCON: "${ENABLE_RCON:-true}"
-      JVM_XX_OPTS: "${JVM_XX_OPTS:--XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch}"
-      UID: "${PROXY_PUID:-${PUID:-1000}}"
-      GID: "${PROXY_PGID:-${PGID:-1000}}"
-      MEMORY: "${PROXY_MEM_LIMIT:-${MEM_LIMIT:-}}"
-      REPLACE_ENV_VARIABLES: "${REPLACE_ENV_VARIABLES:-true}"
-      TYPE: "${PROXY_TYPE:-WATERFALL}"
-      PATCH_DEFINITIONS: "/config/patches"
+      EULA: "TRUE"
     volumes:
-      - "${BASE_DIR:-.}/config/proxy:/config"
-      - "${BASE_DIR:-.}/data/proxy:/server"
+      - "${BASE_DIR:-.}/config/minecraft:/config:ro"
+      - "${BASE_DIR:-.}/data/minecraft:/data"
     networks:
       - "minecraft"
     ports:
-      - "25565:25577"
-    deploy:
-      resources:
-        limits:
-          cpus: "${PROXY_CPU_LIMIT:-${CPU_LIMIT:-0}}"
-          memory: "${PROXY_MEM_LIMIT:-${MEM_LIMIT:-0}}"
-
-  survival:
-    image: "itzg/minecraft-server:latest"
-    container_name: "survival"
-    restart: "unless-stopped"
-    user: "${SERVER_PUID:-${PUID:-1000}}:${SERVER_PGID:-${PGID:-1000}}"
-    stdin_open: true
-    tty: true
-    env_file:
-      - path: ".env"
-        required: false
-      - path: "stack.env"
-        required: false
-    environment:
-      TZ: "${TZ:-UTC}"
-      ENABLE_ROLLING_LOGS: "${ENABLE_ROLLING_LOGS:-true}"
-      EULA: "true"
-      JVM_DD_OPTS: "${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}"
-      UID: "${SERVER_PUID:-${PUID:-1000}}"
-      GID: "${SERVER_PGID:-${PGID:-1000}}"
-      MEMORY: "${SERVER_MEM_LIMIT:-${MEM_LIMIT:-}}"
-      REPLACE_ENV_VARIABLES: "${REPLACE_ENV_VARIABLES:-true}"
-      TYPE: "${TYPE:-PAPER}"
-      USE_AIKAR_FLAGS: "${USE_AIKAR_FLAGS:-true}"
-      VERSION: "${VERSION:-LATEST}"
-      PATCH_DEFINITIONS: "/config/patches"
-    volumes:
-      - "${BASE_DIR:-.}/config/survival:/config"
-      - "${BASE_DIR:-.}/data/survival:/data"
-    networks:
-      - "minecraft"
-    deploy:
-      resources:
-        limits:
-          cpus: "${SERVER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
-          memory: "${SERVER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+      - "25565:25565"
+    healthcheck:
+      test:
+        - "CMD"
+        - "mc-health"
+      start_period: "5m"
+      interval: "30s"
+      timeout: "10s"
 
   mariadb:
     image: "mariadb:latest"
     container_name: "minecraft-mariadb"
     restart: "unless-stopped"
     init: true
-    user: "${MARIADB_PUID:-${PUID:-1000}}:${MARIADB_PGID:-${PGID:-1000}}"
-    networks:
-      - "minecraft"
-    environment:
-      TZ: "${TZ:-UTC}"
-      MARIADB_DATABASE: "${MARIADB_DATABASE:-minecraft}"
-      MARIADB_USER: "${MARIADB_USER:-minecraft}"
-      MARIADB_PASSWORD: "${MARIADB_PASSWORD:-minecraft}"
-      MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD:-minecraft}"
+    read_only: true
+    user: "${PUID:-1000}:${PGID:-1000}"
+    mem_limit: "512m"
+    memswap_limit: "512m"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     volumes:
       - "${BASE_DIR:-.}/data/mariadb:/var/lib/mysql"
-    deploy:
-      resources:
-        limits:
-          cpus: "${MARIADB_CPU_LIMIT:-${CPU_LIMIT:-0}}"
-          memory: "${MARIADB_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+      - "${BASE_DIR:-.}/config/mariadb:/etc/mysql/conf.d:ro"
+    networks:
+      - "minecraft"
+    healthcheck:
+      test:
+        - "CMD"
+        - "healthcheck.sh"
+        - "--connect"
+        - "--innodb_initialized"
+      start_period: "10s"
+      interval: "10s"
+      timeout: "5s"
 
 networks:
   minecraft:
