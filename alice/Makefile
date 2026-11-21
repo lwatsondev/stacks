@@ -23,11 +23,10 @@ ifneq ($(ALICE_FRIGATE_REMOTE),)
 	scripts/mount-frigate.sh $(ALICE_FRIGATE_REMOTE)
 endif
 
-# Keep-id leaves files owned by the invoking user.
+# Container root maps to the invoking user, so files stay owned by them.
 up: build mount
-	podman run --detach --replace --name alice \
+	podman run --replace --name alice \
 		--init \
-		--userns keep-id \
 		--cap-drop all \
 		--security-opt no-new-privileges \
 		--publish $(ALICE_PUBLISH):$(ALICE_PORT):$(ALICE_PORT) \
