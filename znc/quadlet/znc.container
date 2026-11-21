@@ -12,6 +12,8 @@ Exec=-d /config --foreground
 RunInit=true
 EnvironmentFile=../.env
 Volume=../data:/config
+Volume=../config/certbot/live:/certbot/live:ro
+Volume=../config/certbot/archive:/certbot/archive:ro
 Network=host
 
 [Service]

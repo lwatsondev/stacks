@@ -1,0 +1,9 @@
+[Unit]
+Description=Certbot
+
+[Timer]
+OnCalendar=*-*-* 00,12:00:00
+RandomizedDelaySec=12h
+
+[Install]
+WantedBy=timers.target

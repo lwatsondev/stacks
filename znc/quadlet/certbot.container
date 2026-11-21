@@ -1,0 +1,17 @@
+[Unit]
+Description=Certbot
+
+[Container]
+Image=docker.io/certbot/dns-cloudflare:latest
+AutoUpdate=registry
+ContainerName=znc-certbot
+Exec=renew --no-random-sleep-on-renew
+# The attached podman run already logs to the unit journal, so a log driver would duplicate it.
+LogDriver=none
+ReadOnly=true
+Volume=../config/certbot:/etc/letsencrypt
+Tmpfs=/var/lib/letsencrypt
+Tmpfs=/var/log/letsencrypt
+
+[Service]
+Type=oneshot
