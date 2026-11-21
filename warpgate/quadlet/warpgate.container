@@ -1,0 +1,21 @@
+[Unit]
+Description=Warpgate
+
+[Container]
+Image=ghcr.io/warp-tech/warpgate:latest
+AutoUpdate=registry
+ContainerName=warpgate
+RunInit=true
+ReadOnly=true
+EnvironmentFile=../.env
+Volume=../data:/data
+HealthCmd=["/usr/local/bin/warpgate", "healthcheck"]
+HealthInterval=10s
+HealthTimeout=5s
+HealthStartPeriod=10s
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
